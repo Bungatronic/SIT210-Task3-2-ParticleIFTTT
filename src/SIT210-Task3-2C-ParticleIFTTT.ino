@@ -4,33 +4,33 @@
  * Author:
  * Date:
  */
-//#define LIGHT_PIN   A4
+#define MOTION_PIN  D0  // PIR input pin
+#define LED_PIN     D2  // LED output pin
 
-//float light=10;
-#define MOTION_PIN A4
+bool motion=0;          // Current motion status
+bool prev_motion=0;     // Previous motion status
 
-bool motion;
-// setup() runs once, when the device is first turned on.
 void setup() {
-  // Put initialization like pinMode and begin functions here.
-  pinMode(MOTION_PIN, INPUT);
+  pinMode(MOTION_PIN, INPUT); // Initialise motion sensor pin
+  pinMode(LED_PIN, OUTPUT);   // Initialise LED pin
   Serial.begin(9600);
 }
 
-// loop() runs over and over again, as quickly as it can execute.
 void loop() {
-  // The core of your code will likely live here.
-  //light=analogRead(LIGHT_PIN);
-  //light=11;
-  //Serial.printlnf("Light: %f", light);
-  motion=digitalRead(MOTION_PIN);
+  bool prev_motion=motion;        // Store previous motion status
+  motion=digitalRead(MOTION_PIN); // Read PIR sensor
 
-  if(motion==true){
-    Serial.println("Motion Detected");
-  } 
-  else{
-    Serial.println("No Motion");
+  // If motion status has changed, update LED to reflect and publish status change to IFTTT
+  if(prev_motion!=motion) {
+    if(motion==true){
+      digitalWrite(LED_PIN, HIGH);
+      Particle.publish("Motion_Status", "Motion Detected");
+    }
+    else {
+      digitalWrite(LED_PIN, LOW);
+      Particle.publish("Motion_Status", "No Motion");
+    }
   }
 
-  delay(2000);
+  delay(1000);
 }
