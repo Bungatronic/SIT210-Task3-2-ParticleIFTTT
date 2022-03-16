@@ -1,9 +1,3 @@
-/*
- * Project SIT210-Task3-2C-ParticleIFTTT
- * Description:
- * Author:
- * Date:
- */
 #define MOTION_PIN  D0  // PIR input pin
 #define LED_PIN     D2  // LED output pin
 
