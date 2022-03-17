@@ -19,6 +19,7 @@ void loop() {
     if(motion==true){
       digitalWrite(LED_PIN, HIGH);
       Particle.publish("Motion_Status", "Motion Detected");
+      delay(30000);
     }
     else {
       digitalWrite(LED_PIN, LOW);
